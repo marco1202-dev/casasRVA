@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "179958264658",
+    "project_id": "casasrva-5045a",
+    "storage_bucket": "casasrva-5045a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179958264658:android:5eb62fcd5566e210fe408b",
+        "android_client_info": {
+          "package_name": "com.casasrva"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "179958264658-tr6toobalur495qopphim07kk0309uk0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.casasrva",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "179958264658-bhmqvhqqskc373fj0ts04sb65cd7p2f9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxhBoiUurO1C48eHh7vI35h4PpNnmqqVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "179958264658-bhmqvhqqskc373fj0ts04sb65cd7p2f9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "179958264658-47ff7jaahb9pnqaidd7mokng72cvtrn5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.domain.casasrvapp",
+                "app_store_id": "123456789"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,45 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/mada-black.ttf",
+      "sha1": "d4538e07bc7a6b5f876c170913fccae82d0b62e9"
+    },
+    {
+      "path": "assets/fonts/mada-bold.ttf",
+      "sha1": "615b4e0543be72bcf132849738573f940eed3e5f"
+    },
+    {
+      "path": "assets/fonts/mada-light.ttf",
+      "sha1": "b34a45a050273273b45fa58de139bf915876c917"
+    },
+    {
+      "path": "assets/fonts/mada-medium.ttf",
+      "sha1": "7b12921ee8fbc0367f97def503e188f41ab53f81"
+    },
+    {
+      "path": "assets/fonts/mada-regular.ttf",
+      "sha1": "fd48c7dafeb353dc34f9a4716a69fc2f1c7c477c"
+    },
+    {
+      "path": "assets/fonts/rubik-black.ttf",
+      "sha1": "ac5408131f3693795f4e9049e78f1d18f1ed19fb"
+    },
+    {
+      "path": "assets/fonts/rubik-bold.ttf",
+      "sha1": "37d3e9933d7ea3cd1ea9048a929a9392c506538f"
+    },
+    {
+      "path": "assets/fonts/rubik-light.ttf",
+      "sha1": "ab626c8a0e663e9daf5b5064783e06ebfef9c80b"
+    },
+    {
+      "path": "assets/fonts/rubik-medium.ttf",
+      "sha1": "1c7160fa20ccc42db9a1fc9245cd8f9367a428ea"
+    },
+    {
+      "path": "assets/fonts/rubik-regular.ttf",
+      "sha1": "688c0cbc43d63c4f63cb997018fe889915a9dc7b"
+    }
+  ]
+}

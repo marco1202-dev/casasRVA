@@ -1,0 +1,60 @@
+// import * as Updates from "expo-updates";
+import i18n from "i18next";
+import moment from "moment";
+import { initReactI18next, useTranslation } from "react-i18next";
+import { I18nManager } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Geocoding from "../utils/Geocoding";
+
+require("moment/locale/es.js");
+require("moment/locale/tr.js");
+
+const I18N_NAME_SPACE = "translation";
+
+var currentLang = null;
+
+export const initLocalization = (lang) => {
+  currentLang = lang;
+  i18n.use(initReactI18next).init({
+    compatibilityJSON: 'v3',
+    resources: {},
+    lng: lang.lang,
+    fallbackLng: "en",
+    ns: I18N_NAME_SPACE,
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+
+  i18n.addResources("en", I18N_NAME_SPACE, require("./locales/en.json"));
+  i18n.addResources("es", I18N_NAME_SPACE, require("./locales/es.json"));
+
+  moment.locale(
+    i18n.hasResourceBundle(lang.lang, I18N_NAME_SPACE) ? lang.lang : "en"
+  );
+
+  I18nManager.allowRTL(lang.isRTL);
+  I18nManager.forceRTL(lang.isRTL);
+};
+
+export const useLocalization = () => {
+  const { t, i18n } = useTranslation();
+  return {
+    getString: (key, options) => t(key, options),
+    changeLanguage: (lang) => {
+      AsyncStorage.setItem("APP_LANGUAGE", lang.lang).then(() => {
+        moment.locale(lang.lang);
+        i18n.changeLanguage(lang.lang);
+
+        Geocoding.setInit(lang.lang);
+        if (currentLang && currentLang.isRTL !== lang.isRTL) {
+          I18nManager.allowRTL(lang.isRTL);
+          I18nManager.forceRTL(lang.isRTL);
+
+          // Updates.reloadAsync();
+        }
+      });
+    },
+    currentLanguage: () => i18n.language,
+  };
+};
