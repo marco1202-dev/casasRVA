@@ -43,6 +43,11 @@ target 'CasasRVA' do
       t.build_configurations.each do |c|
         c.build_settings['ENABLE_BITCODE'] = 'NO'
         c.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '18.0'
+        # Fix Hermes dSYM generation
+        if t.name == 'hermes-engine'
+          c.build_settings['DEBUG_INFORMATION_FORMAT'] = 'dwarf-with-dsym'
+          c.build_settings['GCC_GENERATE_DEBUGGING_SYMBOLS'] = 'YES'
+        end
       end
     end
   end
