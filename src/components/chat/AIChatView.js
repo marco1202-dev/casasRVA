@@ -349,101 +349,109 @@ const AIChatView = ({ onPropertyPress, style, onFocusChange, isActive = true }) 
 
   return (
     <View style={[styles.container, style]}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={0}
-      >
-        {/* Language Toggle */}
-        <View style={styles.langRow}>
+      {/* Language Toggle */}
+      <View style={styles.langRow}>
         <View style={styles.langRowInner}>
-        <TouchableOpacity
-          style={[
-            styles.langPill,
-            { backgroundColor: language === 'es' ? '#b42029' : '#ffffff', borderColor: '#b42029' }
-          ]}
-          onPress={() => language !== 'es' && toggleLanguage()}
-        >
-          <Text style={[styles.langPillText, { color: language === 'es' ? '#ffffff' : '#b42029' }]}>🇪🇸  Español</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[
-            styles.langPill,
-            { backgroundColor: language === 'en' ? '#b42029' : '#ffffff', borderColor: '#b42029' }
-          ]}
-          onPress={() => language !== 'en' && toggleLanguage()}
-        >
-          <Text style={[styles.langPillText, { color: language === 'en' ? '#ffffff' : '#b42029' }]}>🇺🇸  English</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.langPill,
+              { backgroundColor: language === 'es' ? '#b42029' : '#ffffff', borderColor: '#b42029' }
+            ]}
+            onPress={() => language !== 'es' && toggleLanguage()}
+          >
+            <Text style={[styles.langPillText, { color: language === 'es' ? '#ffffff' : '#b42029' }]}>🇪🇸  Español</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.langPill,
+              { backgroundColor: language === 'en' ? '#b42029' : '#ffffff', borderColor: '#b42029' }
+            ]}
+            onPress={() => language !== 'en' && toggleLanguage()}
+          >
+            <Text style={[styles.langPillText, { color: language === 'en' ? '#ffffff' : '#b42029' }]}>🇺🇸  English</Text>
+          </TouchableOpacity>
         </View>
       </View>
-        {/* Chat Panel (matches web card) */}
-        <View style={styles.chatPanel}>
+
+      {/* Chat Panel */}
+      <View style={styles.chatPanel}>
         {/* Chat Header */}
         <View style={styles.chatHeader}>
           <Text style={styles.chatHeaderTitle}>{language === 'es' ? 'Asistente De Propiedades' : 'Property Assistant'}</Text>
           <View style={styles.onlineBadge}><Text style={styles.onlineBadgeText}>{language === 'es' ? 'En línea' : 'Online'}</Text></View>
         </View>
 
-        <FlatList
-          ref={flatListRef}
-          data={messages}
-          renderItem={renderMessage}
-          keyExtractor={(item, index) => `${item.role}-${index}`}
-          style={styles.messagesList}
-          contentContainerStyle={[
-            styles.messagesContent,
-            { paddingBottom: Math.max(160, inputBarHeight + 40) }
-          ]}
-          showsVerticalScrollIndicator={false}
-          keyboardShouldPersistTaps="handled"
-          removeClippedSubviews
-          initialNumToRender={8}
-          maxToRenderPerBatch={8}
-          updateCellsBatchingPeriod={50}
-          windowSize={7}
-        />
+        <KeyboardAvoidingView
+          style={{ flex: 1 }}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
+        >
+          <FlatList
+            ref={flatListRef}
+            data={messages}
+            renderItem={renderMessage}
+            keyExtractor={(item, index) => `${item.role}-${index}`}
+            style={styles.messagesList}
+            contentContainerStyle={styles.messagesContent}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+            removeClippedSubviews
+            initialNumToRender={8}
+            maxToRenderPerBatch={8}
+            updateCellsBatchingPeriod={50}
+            windowSize={7}
+            onContentSizeChange={() => {
+              if (scrollTimeoutRef.current) {
+                clearTimeout(scrollTimeoutRef.current);
+              }
+              scrollTimeoutRef.current = setTimeout(() => {
+                if (flatListRef.current && messages.length > 0) {
+                  flatListRef.current.scrollToEnd({ animated: true });
+                }
+              }, 100);
+            }}
+            onLayout={() => {
+              if (flatListRef.current && messages.length > 0) {
+                setTimeout(() => {
+                  flatListRef.current.scrollToEnd({ animated: true });
+                }, 100);
+              }
+            }}
+          />
 
           {false && renderQuickActions()}
-        </View>
-      </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+      </View>
 
-      {/* Pinned input at screen bottom (outside keyboard-avoiding area) */}
+      {/* Input at bottom with proper keyboard handling */}
       {isActive && (
-        <View
-          onLayout={(e) => setInputBarHeight(e?.nativeEvent?.layout?.height || 0)}
-          style={[
-            styles.inputContainer,
-            {
-              position: 'absolute',
-              left: SCREEN_HOR_PADDING,
-              right: SCREEN_HOR_PADDING,
-              bottom: Math.max(0, keyboardHeight),
-              zIndex: 100
-            }
-          ]}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
         >
-          <TextInput
-            style={styles.textInput}
-            value={inputText}
-            onChangeText={setInputText}
-            placeholder={language === 'es' ? 'Buscar casas...' : 'Search homes...'}
-            placeholderTextColor={Theme.colors.lightgray}
-            multiline
-            maxLength={1000}
-          />
-          <TouchableOpacity
-            style={[styles.sendButtonRect, (!inputText.trim() || isLoading) && styles.sendButtonRectDisabled]}
-            onPress={sendMessage}
-            disabled={!inputText.trim() || isLoading}
-          >
-            {isLoading ? (
-              <ActivityIndicator size="small" color="white" />
-            ) : (
-              <Text style={styles.sendButtonRectText}>{language === 'es' ? 'Enviar' : 'Send'}</Text>
-            )}
-          </TouchableOpacity>
-        </View>
+          <View style={styles.inputContainer}>
+            <TextInput
+              style={styles.textInput}
+              value={inputText}
+              onChangeText={setInputText}
+              placeholder={language === 'es' ? 'Buscar casas...' : 'Search homes...'}
+              placeholderTextColor={Theme.colors.lightgray}
+              multiline
+              maxLength={1000}
+            />
+            <TouchableOpacity
+              style={[styles.sendButtonRect, (!inputText.trim() || isLoading) && styles.sendButtonRectDisabled]}
+              onPress={sendMessage}
+              disabled={!inputText.trim() || isLoading}
+            >
+              {isLoading ? (
+                <ActivityIndicator size="small" color="white" />
+              ) : (
+                <Text style={styles.sendButtonRectText}>{language === 'es' ? 'Enviar' : 'Send'}</Text>
+              )}
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
       )}
     </View>
   );
@@ -483,7 +491,7 @@ const styles = StyleSheet.create({
   messagesContent: {
     padding: SCREEN_HOR_PADDING,
     paddingTop: 60,
-    paddingBottom: 140, // enough room for fixed input while maximizing history
+    paddingBottom: 20,
   },
   langRow: {
     width: '100%',
