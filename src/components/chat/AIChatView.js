@@ -29,6 +29,7 @@ const AIChatView = ({ onPropertyPress, style, onFocusChange, isActive = true }) 
   const [isInitialized, setIsInitialized] = useState(false);
   const [language, setLanguage] = useState('es');
   const [keyboardHeight, setKeyboardHeight] = useState(0);
+  const [inputBarHeight, setInputBarHeight] = useState(0);
   const flatListRef = useRef(null);
   const scrollTimeoutRef = useRef(null);
 
@@ -355,6 +356,7 @@ const AIChatView = ({ onPropertyPress, style, onFocusChange, isActive = true }) 
       >
         {/* Language Toggle */}
         <View style={styles.langRow}>
+        <View style={styles.langRowInner}>
         <TouchableOpacity
           style={[
             styles.langPill,
@@ -373,6 +375,7 @@ const AIChatView = ({ onPropertyPress, style, onFocusChange, isActive = true }) 
         >
           <Text style={[styles.langPillText, { color: language === 'en' ? '#ffffff' : '#b42029' }]}>🇺🇸  English</Text>
         </TouchableOpacity>
+        </View>
       </View>
         {/* Chat Panel (matches web card) */}
         <View style={styles.chatPanel}>
@@ -388,7 +391,10 @@ const AIChatView = ({ onPropertyPress, style, onFocusChange, isActive = true }) 
           renderItem={renderMessage}
           keyExtractor={(item, index) => `${item.role}-${index}`}
           style={styles.messagesList}
-          contentContainerStyle={styles.messagesContent}
+          contentContainerStyle={[
+            styles.messagesContent,
+            { paddingBottom: Math.max(140, inputBarHeight + 24) }
+          ]}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
           removeClippedSubviews
@@ -404,12 +410,24 @@ const AIChatView = ({ onPropertyPress, style, onFocusChange, isActive = true }) 
 
       {/* Pinned input at screen bottom (outside keyboard-avoiding area) */}
       {isActive && (
-        <View style={[styles.inputContainer, { position: 'absolute', left: SCREEN_HOR_PADDING, right: SCREEN_HOR_PADDING, bottom: Math.max(0, keyboardHeight - 16), zIndex: 100 }]}>
+        <View
+          onLayout={(e) => setInputBarHeight(e?.nativeEvent?.layout?.height || 0)}
+          style={[
+            styles.inputContainer,
+            {
+              position: 'absolute',
+              left: SCREEN_HOR_PADDING,
+              right: SCREEN_HOR_PADDING,
+              bottom: Math.max(0, keyboardHeight - 16),
+              zIndex: 100
+            }
+          ]}
+        >
           <TextInput
             style={styles.textInput}
             value={inputText}
             onChangeText={setInputText}
-            placeholder={language === 'es' ? 'Pregunta sobre propiedades...' : 'Ask about properties...'}
+            placeholder={language === 'es' ? 'Buscar casas...' : 'Search homes...'}
             placeholderTextColor={Theme.colors.lightgray}
             multiline
             maxLength={1000}
@@ -468,12 +486,20 @@ const styles = StyleSheet.create({
     paddingBottom: 140, // enough room for fixed input while maximizing history
   },
   langRow: {
+    width: '100%',
+    alignSelf: 'stretch',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    paddingHorizontal: SCREEN_HOR_PADDING,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 0,
     paddingTop: 8,
     paddingBottom: 6,
-    gap: 8,
+  },
+  langRowInner: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
   },
   langPill: {
     backgroundColor: 'white',
@@ -482,7 +508,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingHorizontal: 10,
     paddingVertical: 6,
-    marginRight: 8,
+    marginHorizontal: 6,
   },
   langPillActive: {
     backgroundColor: Theme.colors.primary,
