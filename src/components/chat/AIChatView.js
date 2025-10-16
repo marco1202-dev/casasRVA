@@ -393,7 +393,7 @@ const AIChatView = ({ onPropertyPress, style, onFocusChange, isActive = true }) 
           style={styles.messagesList}
           contentContainerStyle={[
             styles.messagesContent,
-            { paddingBottom: Math.max(140, inputBarHeight + 24) }
+            { paddingBottom: Math.max(160, inputBarHeight + 40) }
           ]}
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
@@ -418,7 +418,7 @@ const AIChatView = ({ onPropertyPress, style, onFocusChange, isActive = true }) 
               position: 'absolute',
               left: SCREEN_HOR_PADDING,
               right: SCREEN_HOR_PADDING,
-              bottom: Math.max(0, keyboardHeight - 16),
+              bottom: Math.max(0, keyboardHeight),
               zIndex: 100
             }
           ]}
