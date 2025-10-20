@@ -422,7 +422,7 @@ const AIChatView = ({ onPropertyPress, style, onFocusChange, isActive = true }) 
               {isLoading ? (
                 <ActivityIndicator size="small" color="white" />
               ) : (
-                <Text style={styles.sendButtonRectText}>{language === 'es' ? 'Enviar' : 'Send !'}</Text>
+                <Text style={styles.sendButtonRectText}>{language === 'es' ? 'Enviar' : 'Send'}</Text>
               )}
             </TouchableOpacity>
           </View>
@@ -450,8 +450,7 @@ const styles = StyleSheet.create({
     color: Theme.colors.text,
   },
   messagesList: {
-    flexGrow: 1,
-    flexShrink: 1,
+    flex: 1,
     minHeight: 200,
     backgroundColor: '#f9fafb',
   },
@@ -469,7 +468,7 @@ const styles = StyleSheet.create({
   messagesContent: {
     padding: SCREEN_HOR_PADDING,
     paddingTop: 60,
-    paddingBottom: 16,
+    paddingBottom: 100, // space for input bar
   },
   langRow: {
     width: '100%',
@@ -478,8 +477,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 0,
-    paddingTop: 8,
-    paddingBottom: 6,
+    paddingTop: 16,
+    paddingBottom: 8,
   },
   langRowInner: {
     flexDirection: 'row',
@@ -674,6 +673,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: SCREEN_HOR_PADDING,
     paddingVertical: 12,
+    paddingBottom: 24,
     backgroundColor: 'white',
     borderTopWidth: 1,
     borderTopColor: '#d1d5db',

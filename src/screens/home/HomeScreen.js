@@ -80,7 +80,7 @@ const HomeScreen = (props) => {
           }
         />
       )}
-      <View style={[styles.body, { paddingTop: !chatActive ? HEADER_HEIGHT + 16 : 16 }]}>
+      <View style={[styles.body, { paddingTop: !chatActive ? HEADER_HEIGHT + 16 : 24 }]}>
         <AIChatView
           onPropertyPress={onPropertyPress}
           style={styles.chatContainer}
