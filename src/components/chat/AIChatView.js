@@ -374,61 +374,36 @@ const AIChatView = ({ onPropertyPress, style, onFocusChange, isActive = true }) 
       </View>
 
       {/* Chat Panel */}
-      <View style={styles.chatPanel}>
+      <KeyboardAvoidingView
+        style={styles.chatPanel}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={0}
+      >
         {/* Chat Header */}
         <View style={styles.chatHeader}>
           <Text style={styles.chatHeaderTitle}>{language === 'es' ? 'Asistente De Propiedades' : 'Property Assistant'}</Text>
           <View style={styles.onlineBadge}><Text style={styles.onlineBadgeText}>{language === 'es' ? 'En línea' : 'Online'}</Text></View>
         </View>
 
-        <KeyboardAvoidingView
-          style={{ flex: 1 }}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
-        >
-          <FlatList
-            ref={flatListRef}
-            data={messages}
-            renderItem={renderMessage}
-            keyExtractor={(item, index) => `${item.role}-${index}`}
-            style={styles.messagesList}
-            contentContainerStyle={styles.messagesContent}
-            showsVerticalScrollIndicator={false}
-            keyboardShouldPersistTaps="handled"
-            removeClippedSubviews
-            initialNumToRender={8}
-            maxToRenderPerBatch={8}
-            updateCellsBatchingPeriod={50}
-            windowSize={7}
-            onContentSizeChange={() => {
-              if (scrollTimeoutRef.current) {
-                clearTimeout(scrollTimeoutRef.current);
-              }
-              scrollTimeoutRef.current = setTimeout(() => {
-                if (flatListRef.current && messages.length > 0) {
-                  flatListRef.current.scrollToEnd({ animated: true });
-                }
-              }, 100);
-            }}
-            onLayout={() => {
-              if (flatListRef.current && messages.length > 0) {
-                setTimeout(() => {
-                  flatListRef.current.scrollToEnd({ animated: true });
-                }, 100);
-              }
-            }}
-          />
+        {/* Messages List */}
+        <FlatList
+          ref={flatListRef}
+          data={messages}
+          renderItem={renderMessage}
+          keyExtractor={(item, index) => `${item.role}-${index}`}
+          style={styles.messagesList}
+          contentContainerStyle={styles.messagesContent}
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          removeClippedSubviews
+          initialNumToRender={8}
+          maxToRenderPerBatch={8}
+          updateCellsBatchingPeriod={50}
+          windowSize={7}
+        />
 
-          {false && renderQuickActions()}
-        </KeyboardAvoidingView>
-      </View>
-
-      {/* Input at bottom with proper keyboard handling */}
-      {isActive && (
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
-        >
+        {/* Input Container - Fixed at bottom of chat panel */}
+        {isActive && (
           <View style={styles.inputContainer}>
             <TextInput
               style={styles.textInput}
@@ -447,12 +422,14 @@ const AIChatView = ({ onPropertyPress, style, onFocusChange, isActive = true }) 
               {isLoading ? (
                 <ActivityIndicator size="small" color="white" />
               ) : (
-                <Text style={styles.sendButtonRectText}>{language === 'es' ? 'Enviar' : 'Send'}</Text>
+                <Text style={styles.sendButtonRectText}>{language === 'es' ? 'Enviar' : 'Send !'}</Text>
               )}
             </TouchableOpacity>
           </View>
-        </KeyboardAvoidingView>
-      )}
+        )}
+
+        {false && renderQuickActions()}
+      </KeyboardAvoidingView>
     </View>
   );
 };
@@ -473,7 +450,8 @@ const styles = StyleSheet.create({
     color: Theme.colors.text,
   },
   messagesList: {
-    flex: 1,
+    flexGrow: 1,
+    flexShrink: 1,
     minHeight: 200,
     backgroundColor: '#f9fafb',
   },
@@ -491,7 +469,7 @@ const styles = StyleSheet.create({
   messagesContent: {
     padding: SCREEN_HOR_PADDING,
     paddingTop: 60,
-    paddingBottom: 20,
+    paddingBottom: 16,
   },
   langRow: {
     width: '100%',

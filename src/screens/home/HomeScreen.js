@@ -17,7 +17,6 @@ import { useLocalization } from "../../localization";
 import NavigationNames from "../../navigations/NavigationNames";
 import { DashboardService } from "../../services";
 import { Theme } from "../../theme";
-import LayoutMainView from "../../components/layouts/LayoutMainView";
 
 const HEADER_HEIGHT = 230;
 
@@ -81,31 +80,22 @@ const HomeScreen = (props) => {
           }
         />
       )}
-      <LayoutMainView
-        style={styles.contentContainer}
-        forceInset={{ top: "always" }}
-      >
-        <View style={[styles.body, { paddingTop: !chatActive ? HEADER_HEIGHT + 16 : 16 }]}>
-          <AIChatView
-            onPropertyPress={onPropertyPress}
-            style={styles.chatContainer}
-            onFocusChange={setChatActive}
-            isActive={isFocused}
-          />
-        </View>
-      </LayoutMainView>
+      <View style={[styles.body, { paddingTop: !chatActive ? HEADER_HEIGHT + 16 : 16 }]}>
+        <AIChatView
+          onPropertyPress={onPropertyPress}
+          style={styles.chatContainer}
+          onFocusChange={setChatActive}
+          isActive={isFocused}
+        />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  flex1: { flex: 1 },
-  contentContainer: { flex: 1 },
-  body: { flex: 1, backgroundColor: Theme.colors.windowBackground, paddingBottom: 16 },
-  topSearchItemsContainerStyle: { paddingHorizontal: 16 },
-  propertyItemsContainerStyle: { paddingBottom: 16, paddingTop: 8 },
-  chatContainer: { flex: 1, marginBottom: 16 },
+  body: { flex: 1, backgroundColor: Theme.colors.windowBackground },
+  chatContainer: { flex: 1 },
 });
 
 export default HomeScreen;
