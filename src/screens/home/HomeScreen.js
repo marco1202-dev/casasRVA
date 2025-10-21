@@ -18,7 +18,7 @@ import NavigationNames from "../../navigations/NavigationNames";
 import { DashboardService } from "../../services";
 import { Theme } from "../../theme";
 
-const HEADER_HEIGHT = 230;
+const HEADER_HEIGHT = 200;
 
 const HomeScreen = (props) => {
   const { navigation } = props;
@@ -80,7 +80,7 @@ const HomeScreen = (props) => {
           }
         />
       )}
-      <View style={[styles.body, { paddingTop: !chatActive ? HEADER_HEIGHT + 36 : 20 }]}>
+      <View style={[styles.body, { paddingTop: !chatActive ? HEADER_HEIGHT + 30 : 20 }]}>
         <AIChatView
           onPropertyPress={onPropertyPress}
           style={styles.chatContainer}
