@@ -477,7 +477,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginHorizontal: 0,
-    paddingTop: 16,
+    marginTop: 16,
+    paddingTop: 8,
     paddingBottom: 8,
   },
   langRowInner: {
