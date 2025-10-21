@@ -61,7 +61,7 @@ const HomeHeaderView = ({
           source={source ? {uri: `${BASE_URL}${source}`} : require('../../../../assets/home-header.png')}
         />
       </Animated.View>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={styles.searchContainer}
         activeOpacity={0.95}
         onPress={onPressSearchInput}
@@ -71,7 +71,7 @@ const HomeHeaderView = ({
             {getString("Search homes...")}
           </Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </Animated.View>
   );
 };
